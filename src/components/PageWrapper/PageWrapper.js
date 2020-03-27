@@ -10,7 +10,7 @@ const useStyles = makeStyles(theme => ({
   },
   mainTheme: {
     paddingTop: theme.spacing(8),
-    height: "100%"
+    height: "calc(100% - 64px)"
   }
 }));
 

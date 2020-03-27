@@ -1,0 +1,16 @@
+$size-topbar: 64px;
+$size-room-list: 20%;
+$size-chat-detail: 80%;
+
+.chat-page {
+  display: flex;
+  height: calc(100vh - #{$size-topbar});
+  .chat__room-list {
+    width: $size-room-list;
+    overflow: auto;
+    border-right: 1px solid#eee;
+  }
+  .chat__detail {
+    width: $size-chat-detail;
+  }
+}

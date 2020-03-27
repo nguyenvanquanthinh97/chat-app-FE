@@ -1,0 +1,19 @@
+.container {
+  height: 100%;
+  .toolbar {
+    border-bottom: 1px solid #eee;
+  }
+  .main-content {
+    position: relative;
+    height: 100%;
+    .conversation-messages {
+      height: 80%;
+      width: 100%;
+    }
+    .conversation-input {
+      position: fixed;
+      width: 75%;
+      bottom: 1rem;
+    }
+  }
+}

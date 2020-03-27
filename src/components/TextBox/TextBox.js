@@ -11,7 +11,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const TextBox = (props) => {
-  const classes = useStyles();
   let { label, value, handleChange, validator, autoFocus, type, errorMessages } = props;
   if (!type) {
     type = "text";

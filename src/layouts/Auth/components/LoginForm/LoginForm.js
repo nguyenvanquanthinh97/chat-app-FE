@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect } from 'react';
 import validate from 'validate.js';
 import { get } from 'lodash';
 import { makeStyles } from '@material-ui/core';
@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
 const LoginForm = (props) => {
 
   const classes = useStyles();
-  const { className } = props;
+  const { className, ...rest } = props;
 
   const [emailState, setEmailState] = useState({
     errors: [],
@@ -107,14 +107,14 @@ const LoginForm = (props) => {
       <div className={classes.fields}>
         <Avatar alt="Chat Whisper" src="/images/logos/chat-logo.png" className={clsx(classes.logo)} classes={{ img: classes.img }} />
         <TextBox
-          label="email"
+          label="Email"
           value={get(emailState, 'content')}
           handleChange={emailOnChange}
           validator={hasError(emailState)}
           errorMessages={hasError(emailState) ? get(emailState, 'errors')[0] : null}
           autoFocus />
         <TextBox
-          label="password"
+          label="Password"
           type="password"
           value={get(passwordState, 'content')}
           handleChange={passwordOnChange}
