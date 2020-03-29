@@ -30,8 +30,16 @@ function* authLogin(action) {
   }
 }
 
+function* authLogout() {
+  localStorage.removeItem('token');
+  localStorage.removeItem('userID');
+  localStorage.removeItem('username');
+  localStorage.removeItem('companyId');
+}
+
 function* authSaga() {
   yield takeEvery(AUTH.AUTH_INIT, authLogin);
+  yield takeEvery(AUTH.AUTH_LOGOUT, authLogout);
 }
 
 export default authSaga;

@@ -2,17 +2,23 @@ import React from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/styles";
-import { AppBar, Toolbar } from "@material-ui/core";
+import { AppBar, Toolbar, Button } from "@material-ui/core";
+import { ExitToApp } from '@material-ui/icons';
+import { connect } from 'react-redux';
 import clsx from "clsx";
 
 const useStyles = makeStyles(() => ({
   root: {
-    boxShadow: "none"
+    boxShadow: "none",
+    display: "flex"
+  },
+  button: {
+    marginLeft: "auto"
   }
 }));
 
 const Topbar = props => {
-  const { className, ...rest } = props;
+  const { className, isLogin, ...rest } = props;
 
   const classes = useStyles();
 
@@ -22,13 +28,27 @@ const Topbar = props => {
         <Link to='/'>
           <img alt='Logo' src='/images/logos/logo.png' />
         </Link>
+        {isLogin && <Link className={classes.button} to="/auth/logout">
+          <Button
+            variant="contained"
+            color="secondary"
+            startIcon={<ExitToApp />}
+          >
+            Logout
+          </Button>
+        </Link>}
       </Toolbar>
     </AppBar>
   );
 };
 
 Topbar.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
+  isLogin: PropTypes.bool
 };
 
-export default Topbar;
+const mapStateToProps = state => ({
+  isLogin: state.auth.isLogin
+});
+
+export default connect(mapStateToProps)(Topbar);

@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import configurationStore from './store';
 import Auth from './layouts/Auth';
 import Chat from './layouts/Chat';
+import Logout from './layouts/Auth/components/Logout';
 
 const store = configurationStore();
 function App() {
@@ -17,6 +18,7 @@ function App() {
             <Route path="/auth/login" exact component={Auth} />
             <Route path="/chat" exact component={Chat} />
             <Route path="/chat/:id" component={Chat} />
+            <Route path="/auth/logout" component={Logout} />
             <Redirect from="/" to="/auth/login" />
           </Switch>
         </Router>
