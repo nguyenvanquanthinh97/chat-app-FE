@@ -5,6 +5,11 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import PropTypes from 'prop-types';
 
 const useStyles = makeStyles(theme => ({
+  root: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center"
+  },
   button: {
     margin: theme.spacing(1),
   },
@@ -15,7 +20,7 @@ const ButtonComponent = (props) => {
   const { text, handleClick, disabled } = props;
 
   return (
-    <div>
+    <div className={classes.root}>
       <Button
         variant="contained"
         color="primary"

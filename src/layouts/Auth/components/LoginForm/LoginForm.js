@@ -4,13 +4,19 @@ import { get } from 'lodash';
 import { makeStyles } from '@material-ui/core';
 import { Avatar } from '@material-ui/core';
 import clsx from "clsx";
+import {connect} from 'react-redux';
 
+import * as actions from '../../../../store/actions';
 import TextBox from '../../../../components/TextBox';
 import Button from '../../../../components/Button';
 
 const useStyles = makeStyles(theme => ({
   root: {
     padding: "auto"
+  },
+  warning: {
+    color: "red",
+    textAlign: "center"
   },
   fields: {
     margin: theme.spacing(-1),
@@ -33,7 +39,7 @@ const useStyles = makeStyles(theme => ({
 const LoginForm = (props) => {
 
   const classes = useStyles();
-  const { className, ...rest } = props;
+  const { className, authLogin, error, ...rest } = props;
 
   const [emailState, setEmailState] = useState({
     errors: [],
@@ -91,7 +97,8 @@ const LoginForm = (props) => {
   const submitHandler = () => {
     const email = get(emailState, "content", "");
     const password = get(passwordState, "content", "");
-    console.log(email, password);
+
+    authLogin(email, password);
   };
 
   const hasError = (field) => {
@@ -104,6 +111,7 @@ const LoginForm = (props) => {
 
   return (
     <form className={clsx(classes.root, className)}>
+      {error && <h4 className={classes.warning}>{error}</h4>}
       <div className={classes.fields}>
         <Avatar alt="Chat Whisper" src="/images/logos/chat-logo.png" className={clsx(classes.logo)} classes={{ img: classes.img }} />
         <TextBox
@@ -131,4 +139,12 @@ const LoginForm = (props) => {
   );
 };
 
-export default LoginForm;
+const mapStateToProps = state => ({
+  error: state.auth.error
+})
+
+const mapDispatchToProps = dispatch => ({
+  authLogin: (email, password) => dispatch(actions.authInit(email, password))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);

@@ -8,8 +8,11 @@ const useStyles = makeStyles(theme => ({
   root: {
     height: "100vh"
   },
+  topbar: {
+    height: theme.spacing(8),
+    position: "relative"
+  },
   mainTheme: {
-    paddingTop: theme.spacing(8),
     height: "calc(100% - 64px)"
   }
 }));
@@ -18,7 +21,7 @@ const PageWrapper = (props) => {
   const classes = useStyles();
   return (
     <div className={clsx(classes.root)}>
-      <Topbar />
+      <Topbar className={classes.topbar}/>
       <div className={clsx(classes.mainTheme)}>
         {props.children}
       </div>

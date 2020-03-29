@@ -1,6 +1,8 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
+import {connect} from 'react-redux';
+import {withRouter} from 'react-router-dom';
 
 import PageWrapper from '../../components/PageWrapper';
 import LoginForm from './components/LoginForm';
@@ -16,8 +18,15 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Auth = ({ match }) => {
+const Auth = ({ isLogin, history }) => {
   const classes = useStyles();
+
+  useEffect(() => {
+    if(isLogin) {
+      history.push('/chat');
+    }
+  }, [isLogin])
+
   return (
     <PageWrapper>
       <div className={clsx(classes.form, classes.root)}>
@@ -27,4 +36,8 @@ const Auth = ({ match }) => {
   );
 };
 
-export default Auth;
+const mapStateToProps = state => ({
+  isLogin: state.auth.isLogin
+})
+
+export default connect(mapStateToProps)(withRouter(Auth));

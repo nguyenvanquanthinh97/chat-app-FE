@@ -1,15 +1,25 @@
 import React, { useState, useEffect } from "react";
 import moment from 'moment-timezone';
 import axios from "axios";
+import { get } from 'lodash';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import ConversationList from './components/ConversationList';
 import ConversationDetail from './components/ConvervationDetail';
 import PageWrapper from '../../components/PageWrapper';
+import ConversationPlaceholder from './components/ConvervationDetail/components/ConversationPlaceholer';
 import "./style.scss";
 
 const Chat = (props) => {
-  const { match, ...rest } = props;
+  const { match, history, isLogin, ...rest } = props;
   const [conversations, setConversations] = useState([]);
+
+  useEffect(() => {
+    if (!isLogin) {
+      history.replace('/auth/login');
+    }
+  }, [isLogin]);
 
   useEffect(() => {
     setConversations(
@@ -113,11 +123,22 @@ const Chat = (props) => {
           <ConversationList conversations={conversations} />
         </div>
         <div className="chat__detail">
-          <ConversationDetail conversation={selectedConversation} />
+          {
+            get(match, 'params.id', '') !== '' ? (
+              <ConversationDetail conversation={selectedConversation} />
+            ) :
+              (
+                <ConversationPlaceholder />
+              )
+          }
         </div>
       </div>
     </PageWrapper>
   );
 };
 
-export default Chat;
+const mapStateToProps = (state) => ({
+  isLogin: state.auth.isLogin
+});
+
+export default connect(mapStateToProps)(withRouter(Chat));

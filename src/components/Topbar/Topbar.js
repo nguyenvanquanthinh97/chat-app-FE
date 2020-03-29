@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/styles";
 import { AppBar, Toolbar } from "@material-ui/core";
+import clsx from "clsx";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -16,7 +17,7 @@ const Topbar = props => {
   const classes = useStyles();
 
   return (
-    <AppBar {...rest} className={classes.root} color='primary'>
+    <AppBar {...rest} className={clsx(classes.root, className)} color='primary'>
       <Toolbar>
         <Link to='/'>
           <img alt='Logo' src='/images/logos/logo.png' />
