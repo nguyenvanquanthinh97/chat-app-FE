@@ -1,7 +1,7 @@
 import { takeEvery, call, put } from 'redux-saga/effects';
 import { get } from 'lodash';
 
-import { postLogin } from '../../api';
+import { postLogin, postLogout } from '../../api';
 import { AUTH } from '../actionTypes';
 import * as actions from '../actions';
 
@@ -30,15 +30,44 @@ function* authLogin(action) {
   }
 }
 
+function* authCheckState() {
+  try {
+    const token = yield localStorage.getItem('token');
+    const userId = yield localStorage.getItem('userId');
+    const username = yield localStorage.getItem('username');
+    const companyId = yield localStorage.getItem('companyId');
+    if (!token) {
+      yield put(actions.authLogout());
+      return;
+    }
+    const authData = {
+      token,
+      userId,
+      username,
+      companyId
+    };
+    yield put(actions.authLogin(authData));
+  } catch (error) {
+    yield put(actions.authFail(error));
+  }
+}
+
 function* authLogout() {
-  localStorage.removeItem('token');
-  localStorage.removeItem('userID');
-  localStorage.removeItem('username');
-  localStorage.removeItem('companyId');
+  try {
+    yield call(postLogout);
+    yield localStorage.removeItem('token');
+    yield localStorage.removeItem('userID');
+    yield localStorage.removeItem('username');
+    yield localStorage.removeItem('companyId');
+    yield put(actions.authLogout);
+  } catch (error) {
+    yield put(actions.authFail(get(error.response, 'data.message')));
+  }
 }
 
 function* authSaga() {
   yield takeEvery(AUTH.AUTH_INIT, authLogin);
+  yield takeEvery(AUTH.AUTH_CHECK_STATE, authCheckState);
   yield takeEvery(AUTH.AUTH_LOGOUT, authLogout);
 }
 

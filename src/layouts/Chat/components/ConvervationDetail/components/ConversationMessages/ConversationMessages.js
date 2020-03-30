@@ -22,18 +22,22 @@ const ConversationMessages = props => {
   const classes = useStyles();
   const bottomRef = useRef(null);
 
+  useEffect(() => {
+    bottomRef.current.scrollTop = bottomRef.current.scrollHeight;
+  }, []);
+
   return (
     <div
       {...rest}
       className={clsx(classes.root, className)}
-
+      ref={bottomRef}
     >
       <div className={classes.inner}>
         {messages.map(message => {
           return (
             <ConversationMessage
               key={message.id}
-              message={message} 
+              message={message}
             />
           );
         })}

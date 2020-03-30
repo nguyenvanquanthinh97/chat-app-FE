@@ -7,7 +7,7 @@ import { ExitToApp } from '@material-ui/icons';
 import { connect } from 'react-redux';
 import clsx from "clsx";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     boxShadow: "none",
     display: "flex"

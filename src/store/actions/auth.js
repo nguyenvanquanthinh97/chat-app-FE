@@ -23,3 +23,7 @@ export const authFail = (error) => ({
 export const authLogout = () => ({
   type: AUTH.AUTH_LOGOUT
 });
+
+export const authCheckState = () => ({
+  type: AUTH.AUTH_CHECK_STATE
+})

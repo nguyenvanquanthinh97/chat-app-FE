@@ -4,6 +4,7 @@ import axios from "axios";
 import { get } from 'lodash';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import * as actions from '../../store/actions';
 
 import ConversationList from './components/ConversationList';
 import ConversationDetail from './components/ConvervationDetail';
@@ -12,10 +13,11 @@ import ConversationPlaceholder from './components/ConvervationDetail/components/
 import "./style.scss";
 
 const Chat = (props) => {
-  const { match, history, isLogin, ...rest } = props;
+  const { match, history, isLogin, checkAuth, ...rest } = props;
   const [conversations, setConversations] = useState([]);
 
   useEffect(() => {
+    checkAuth();
     if (!isLogin) {
       history.replace('/auth/login');
     }
@@ -141,4 +143,8 @@ const mapStateToProps = (state) => ({
   isLogin: state.auth.isLogin
 });
 
-export default connect(mapStateToProps)(withRouter(Chat));
+const mapDispatchToProps = dispatch => ({
+  checkAuth: () => dispatch(actions.authCheckState())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Chat));
