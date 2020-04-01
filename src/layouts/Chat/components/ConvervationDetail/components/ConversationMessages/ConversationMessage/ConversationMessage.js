@@ -84,18 +84,18 @@ const ConversationMessage = props => {
               </Link>
             </div>
             <div className={classes.content}>
-              {message.contentType === 'image' ? (
+              {message.sender.contentType === 'image' ? (
                 <img
                   alt="Attachment"
                   className={classes.image}
-                  src={message.content}
+                  src={message.sender.content}
                 />
               ) : (
                 <Typography
                   color="inherit"
                   variant="body1"
                 >
-                  {message.content}
+                  {message.sender.content}
                 </Typography>
               )}
             </div>
@@ -105,7 +105,7 @@ const ConversationMessage = props => {
               className={classes.time}
               variant="body2"
             >
-              {moment(message.createdAt).fromNow()}
+              {moment(message.sender.createdAt).fromNow()}
             </Typography>
           </div>
         </div>

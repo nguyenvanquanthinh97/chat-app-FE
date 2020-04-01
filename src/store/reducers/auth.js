@@ -5,6 +5,8 @@ const initialState = {
   token: null,
   userId: null,
   username: null,
+  avatar: null,
+  email: null,
   companyId: null,
   error: null,
   loading: false,
@@ -25,6 +27,7 @@ const reducer = (state = initialState, action) => {
         token: get(action.authData, 'token', null),
         userId: get(action.authData, 'userId', null),
         username: get(action.authData, 'username', null),
+        email: get(action.authData, 'email', null),
         companyId: get(action.authData, 'companyId', null),
         loading: false,
         isLogin: true
@@ -41,6 +44,7 @@ const reducer = (state = initialState, action) => {
         token: null,
         userId: null,
         username: null,
+        email: null,
         companyId: null,
         isLogin: false
       };

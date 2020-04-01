@@ -24,7 +24,7 @@ const ConversationMessages = props => {
 
   useEffect(() => {
     bottomRef.current.scrollTop = bottomRef.current.scrollHeight;
-  }, []);
+  }, [messages]);
 
   return (
     <div

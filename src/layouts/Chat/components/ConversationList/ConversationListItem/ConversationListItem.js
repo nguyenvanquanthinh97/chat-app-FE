@@ -43,8 +43,11 @@ const ConversationListItem = (props) => {
   const { active, conversation, className, ...rest } = props;
   const classes = useStyles();
   let lastMessage = conversation.messages[conversation.messages.length - 1];
-  if(!lastMessage) {
-    lastMessage = {content: "Hello Thinh", createdAt: moment().subtract(2, 'hour').format()}
+
+  if (!lastMessage) {
+    lastMessage = { sender: { content: `You and ${get(conversation, 'username')} now can talk eachother`, createdAt: moment().format() }};
+  } else {
+    lastMessage = lastMessage;
   }
   return (
     <ListItem
@@ -73,7 +76,7 @@ const ConversationListItem = (props) => {
           noWrap: true,
           variant: "h6"
         }}
-        secondary={lastMessage.content}
+        secondary={lastMessage.sender.content}
         secondaryTypographyProps={{
           noWrap: true,
           variant: "body1"
@@ -81,9 +84,9 @@ const ConversationListItem = (props) => {
       >
         <div className={classes.details}>
           <Typography noWrap variant='body2'>
-            {moment(lastMessage.createdAt).isSame(moment(), "day")
-              ? moment(lastMessage.createdAt).format("LT")
-              : moment(lastMessage.createdAt).fromNow()}
+            {moment(lastMessage.sender.createdAt).isSame(moment(), "day")
+              ? moment(lastMessage.sender.createdAt).format("LT")
+              : moment(lastMessage.sender.createdAt).fromNow()}
           </Typography>
           {conversation.unread > 0 && (
             <Label

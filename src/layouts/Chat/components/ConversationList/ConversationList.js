@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import clsx from "clsx";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/styles";
@@ -21,14 +21,19 @@ const useStyles = makeStyles(theme => ({
 const ConversationList = (props) => {
   const { conversations, className, match, ...rest } = props;
   const [stateInput, setStateInput] = useState('');
-  let searchedConversations = conversations;
+  const [searchedConversations, setSearchedConversation] = useState([]);
 
   const classes = useStyles();
   const selectedConversation = match.params.id;
 
+  useEffect(() => {
+    setSearchedConversation(conversations);
+  }, [conversations])
+
   const handleSearch = (event) => {
     const username = event.target.value;
-    searchedConversations = searchedConversations.filter(el => el.username === username);
+    const searchResult = conversations.filter(el => el.username.includes(username));
+    setSearchedConversation(searchResult);
     setStateInput(username);
   };
 
@@ -37,12 +42,12 @@ const ConversationList = (props) => {
       <SearchForm value={stateInput} handleInput={handleSearch} placeholder="Search Username" />
       <Divider />
       <List disablePadding>
-        {conversations.map((conversation, i) => (
+        {searchedConversations.map((conversation, i) => (
           <ConversationListItem
             path={props.path}
             active={conversation.id === selectedConversation}
             conversation={conversation}
-            divider={i < conversations.length - 1}
+            divider={i < searchedConversations.length - 1}
             key={conversation.id}
           />
         ))}

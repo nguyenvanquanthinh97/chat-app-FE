@@ -19,7 +19,7 @@ function App() {
             <Route path="/chat" exact component={Chat} />
             <Route path="/chat/:id" component={Chat} />
             <Route path="/auth/logout" component={Logout} />
-            <Redirect from="/" to="/auth/login" />
+            <Redirect from="/" to="/chat" />
           </Switch>
         </Router>
       </Provider>

@@ -11,6 +11,12 @@ import {
   Tooltip
 } from '@material-ui/core';
 import { Send as SendIcon, AddPhotoAlternate as AddPhotoIcon, AttachFile as AttachFileIcon } from '@material-ui/icons';
+import { connect } from 'react-redux';
+import moment from 'moment-timezone';
+import { set } from 'lodash';
+
+import * as actions from '../../../../../../store/actions';
+
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -37,7 +43,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const ConversationForm = props => {
-  const { className, ...rest } = props;
+  const { className, avatar, roomId, sendMessage, username, socket, ...rest } = props;
 
   const classes = useStyles();
 
@@ -46,13 +52,34 @@ const ConversationForm = props => {
   const fileInputRef = useRef(null);
 
   const sender = {
-    avatar: '/images/avatars/avatar_11.png'
+    avatar: avatar
   };
 
   const handleChange = event => {
     event.persist();
 
     setValue(event.target.value);
+  };
+
+  const keyPressed = event => {
+    if(event.which === 13) {
+      onSendHandler();
+    }
+  }
+
+  const onSendHandler = (event) => {
+    if (value === '') {
+      return;
+    }
+    const message = {
+      username: username,
+      avatar: avatar,
+      content: value,
+      contentType: "text",
+      createdAt: moment()
+    };
+    sendMessage(socket, message, roomId);
+    setValue("");
   };
 
   const handleAttach = () => {
@@ -75,11 +102,13 @@ const ConversationForm = props => {
         <Input
           className={classes.input}
           disableUnderline
+          value={value}
+          onKeyPress={keyPressed}
           onChange={handleChange}
           placeholder="Leave a message"
         />
       </Paper>
-      <Tooltip title="Send">
+      <Tooltip onClick={onSendHandler} title="Send">
         <IconButton color={value.length > 0 ? 'primary' : 'default'}>
           <SendIcon />
         </IconButton>
@@ -114,4 +143,14 @@ ConversationForm.propTypes = {
   className: PropTypes.string
 };
 
-export default ConversationForm;
+const mapStateToProps = state => ({
+  username: state.auth.username,
+  avatar: state.auth.avatar,
+  socket: state.chat.socket
+});
+
+const mapDispatchToProps = dispatch => ({
+  sendMessage: (socket, message, roomId) => dispatch(actions.chatSendMessageInit(socket, message, roomId))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ConversationForm);

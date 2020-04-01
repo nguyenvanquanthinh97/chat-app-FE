@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
 
 
 const ConversationToolbar = (props) => {
-  const { conversation, className, ...rest } = props;
+  const { conversation, className, ...rest } = props; 
 
   const classes = useStyles();
 

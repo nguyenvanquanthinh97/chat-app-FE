@@ -6,3 +6,17 @@ export {
   authLogout,
   authCheckState
 } from './auth';
+
+export {
+  chatFetchInit,
+  chatFetchRooms,
+  chatSetRooms,
+  chatFetchFail,
+  chatFetchMessagesStart,
+  chatSetMessages,
+  chatFetchMessagesEnd,
+  chatSendMessageInit,
+  chatSetMessageRealTime,
+  chatSetUsersStatus,
+  chatAuthClose
+} from './chat'

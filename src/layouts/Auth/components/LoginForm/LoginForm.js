@@ -111,7 +111,7 @@ const LoginForm = (props) => {
 
   return (
     <form className={clsx(classes.root, className)}>
-      {error && <h4 className={classes.warning}>{error}</h4>}
+      {(error && error != "Invalid Token") && <h4 className={classes.warning}>{error}</h4>}
       <div className={classes.fields}>
         <Avatar alt="Chat Whisper" src="/images/logos/chat-logo.png" className={clsx(classes.logo)} classes={{ img: classes.img }} />
         <TextBox
