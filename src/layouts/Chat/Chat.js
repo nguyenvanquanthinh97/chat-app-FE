@@ -25,7 +25,7 @@ const Chat = (props) => {
       history.replace('/auth/login');
     }
     if (token) {
-      socket = io(`${process.env.REACT_APP_BACKEND_CHAT_WHISPER}/${companyId}`, {
+      socket = io(`https://chat-app-be.tk/${companyId}`, {
         query: {
           token: token
         }
