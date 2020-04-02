@@ -13,6 +13,7 @@ import {
 } from "@material-ui/core";
 import { get } from 'lodash';
 
+import StatusBullet from '../../../../../components/StatusBullet';
 import Label from '../../../../../components/Label';
 import PropTypes from "prop-types";
 
@@ -44,11 +45,10 @@ const ConversationListItem = (props) => {
   const classes = useStyles();
   let lastMessage = conversation.messages[conversation.messages.length - 1];
 
-  
 
   const lastActivity = get(conversation, 'lastActivity');
-  let lastActive = conversation.active ? 'Online' : moment(get(conversation, 'lastActivity')).format("LT")
-  if(lastActivity === "") {
+  let lastActive = conversation.active ? <StatusBullet color="success" size="small" /> : moment(get(conversation, 'lastActivity')).format("LT");
+  if (lastActivity === "") {
     lastActive = "Haven't joined yet";
   }
   if (!lastMessage) {
