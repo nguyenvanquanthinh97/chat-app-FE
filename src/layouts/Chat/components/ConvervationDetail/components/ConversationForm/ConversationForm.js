@@ -102,6 +102,7 @@ const ConversationForm = props => {
         <Input
           className={classes.input}
           disableUnderline
+          autoFocus
           value={value}
           onKeyPress={keyPressed}
           onChange={handleChange}

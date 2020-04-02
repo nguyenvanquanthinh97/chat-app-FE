@@ -46,17 +46,24 @@ export const chatSendMessageInit = (socket, message, roomId) => ({
   roomId
 });
 
-export const chatSetMessageRealTime = (message, roomId, isAuth) => ({
+export const chatSetMessageRealTime = (message, roomId, isAuth, unreadTotal = 0) => ({
   type: CHAT.CHAT_SET_MESSAGE_REALTIME,
   message,
   roomId,
-  isAuth
+  isAuth,
+  unread: unreadTotal
 });
 
-export const chatSetUsersStatus = (userId, isOnline) => ({
+export const chatSetUsersStatus = (userId, isOnline, lastActivity) => ({
   type: CHAT.CHAT_SET_USERS_STATUS,
   userId,
-  active: isOnline
+  active: isOnline,
+  lastActivity
+})
+
+export const chatSetUnreadMessagesToRead = (roomId) => ({
+  type: CHAT.CHAT_SET_UNREAD_MESSAGES_ARE_READ,
+  roomId
 })
 
 export const chatAuthClose = (socket) => ({

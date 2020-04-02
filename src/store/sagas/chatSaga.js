@@ -11,6 +11,7 @@ function* handleJoinCompanyChatEvent(socket, userId, username) {
     const handleRoomsData = (roomList, userActivityList) => {
       const rooms = roomList.map(room => {
         const id = get(room, '_id');
+        let totalUnread = get(room.unread.find(unread => unread.userId === userId), 'total', 0);
         let otherUser = Array.from(room.clients).find(client => client.userId !== userId);
         if (!otherUser) {
           otherUser = {
@@ -19,8 +20,11 @@ function* handleJoinCompanyChatEvent(socket, userId, username) {
           };
         }
         const otherUserStatus = userActivityList.find(userActivity => userActivity.userId === otherUser.userId);
-        const active = get(otherUserStatus, 'isOnline', false);
-        const lastActivity = active ? moment() : moment(get(otherUserStatus, 'lastActive'));
+        const active = get(otherUserStatus, 'isOnline', null);
+        let lastActivity = "";
+        if(active !== null) {
+          lastActivity = active ? moment() : moment(get(otherUserStatus, 'lastActive'));
+        }
         const messages = get(room, 'messages', []).map(message => {
           const isAuth = get(message, 'senderId') === userId;
           const usernameOfSender = isAuth ? username : get(otherUser, 'username', '');
@@ -42,7 +46,8 @@ function* handleJoinCompanyChatEvent(socket, userId, username) {
           avatar: get(room, 'avatar', ''),
           active,
           lastActivity,
-          messages
+          messages,
+          unread: totalUnread
         };
       });
       emit(rooms);

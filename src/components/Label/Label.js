@@ -11,17 +11,15 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center',
     flexGrow: 0,
     flexShrink: 0,
-    borderRadius: theme.shape.borderRadius,
+    borderRadius: "30%",
     lineHeight: '10px',
     fontSize: '10px',
     height: 20,
     minWidth: 20,
-    whiteSpace: 'nowrap',
-    padding: theme.spacing(0.5, 1)
+    whiteSpace: 'nowrap'
   },
   rounded: {
-    borderRadius: 10,
-    padding: theme.spacing(0.5)
+    borderRadius: 10
   }
 }));
 

@@ -25,9 +25,12 @@ const reducer = (state = initialState, action) => {
       };
     };
     case CHAT.CHAT_SET_ROOMS: {
+      const unreadRooms = action.roomList.filter(room => room.unread > 0);
+      const readedRooms = action.roomList.filter(room => room.unread === 0);
+      const updatedRooms = unreadRooms.concat(readedRooms);
       return {
         ...state,
-        conversations: action.roomList,
+        conversations: updatedRooms,
         loading: false
       };
     };
@@ -59,11 +62,12 @@ const reducer = (state = initialState, action) => {
       };
     }
     case CHAT.CHAT_SET_MESSAGE_REALTIME: {
-      const updatedConversation = [...state.conversations];
+      const updatedConversation = cloneDeep(state.conversations);
       const roomId = action.roomId;
       const message = action.message;
       const isAuth = action.isAuth;
       const room = updatedConversation.find(item => item.id === roomId);
+      room.unread = action.unread;
       const formatMessage = {
         sender: {
           authUser: isAuth,
@@ -81,13 +85,23 @@ const reducer = (state = initialState, action) => {
       };
     }
     case CHAT.CHAT_SET_USERS_STATUS: {
-      const { userId, active } = action;
+      const { userId, active, lastActivity } = action;
       const updatedConversations = [...state.conversations];
       const conversation = updatedConversations.find(conversation => conversation.otherUserId === userId);
       set(conversation, 'active', active);
+      set(conversation, 'lastActivity', lastActivity);
       return {
         ...state,
         conversations: updatedConversations
+      };
+    }
+    case CHAT.CHAT_SET_UNREAD_MESSAGES_ARE_READ: {
+      const conversations = cloneDeep(state.conversations);
+      const conversation = conversations.find(room => room.id === action.roomId);
+      set(conversation, 'unread', 0);
+      return {
+        ...state,
+        conversations: conversations
       };
     }
     case CHAT.CHAT_AUTH_CLOSE: {
@@ -95,7 +109,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         conversations: [],
         socket: null
-      }
+      };
     }
     default:
       return state;

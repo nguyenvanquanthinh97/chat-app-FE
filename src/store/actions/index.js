@@ -18,5 +18,6 @@ export {
   chatSendMessageInit,
   chatSetMessageRealTime,
   chatSetUsersStatus,
+  chatSetUnreadMessagesToRead,
   chatAuthClose
 } from './chat'

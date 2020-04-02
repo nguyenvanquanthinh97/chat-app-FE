@@ -12,7 +12,6 @@ const ConversationDetail = (props) => {
   const { conversation, className, match, socket, ...rest } = props;
   const roomId = get(match, 'params.id');
 
-
   return (
     <div {...rest} className="container">
       <div className="toolbar">

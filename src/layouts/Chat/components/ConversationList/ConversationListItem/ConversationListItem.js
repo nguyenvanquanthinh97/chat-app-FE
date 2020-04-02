@@ -44,8 +44,15 @@ const ConversationListItem = (props) => {
   const classes = useStyles();
   let lastMessage = conversation.messages[conversation.messages.length - 1];
 
+  
+
+  const lastActivity = get(conversation, 'lastActivity');
+  let lastActive = conversation.active ? 'Online' : moment(get(conversation, 'lastActivity')).format("LT")
+  if(lastActivity === "") {
+    lastActive = "Haven't joined yet";
+  }
   if (!lastMessage) {
-    lastMessage = { sender: { content: `You and ${get(conversation, 'username')} now can talk eachother`, createdAt: moment().format() }};
+    lastMessage = { sender: { content: `You and ${get(conversation, 'username')} now can talk eachother`, createdAt: moment().format() } };
   } else {
     lastMessage = lastMessage;
   }
@@ -82,22 +89,26 @@ const ConversationListItem = (props) => {
           variant: "body1"
         }}
       >
-        <div className={classes.details}>
-          <Typography noWrap variant='body2'>
-            {moment(lastMessage.sender.createdAt).isSame(moment(), "day")
-              ? moment(lastMessage.sender.createdAt).format("LT")
-              : moment(lastMessage.sender.createdAt).fromNow()}
-          </Typography>
-          {conversation.unread > 0 && (
-            <Label
-              className={classes.unread}
-              color={colors.red[500]}
-              shape='rounded'>
-              {conversation.unread}
-            </Label>
-          )}
-        </div>
+
       </ListItemText>
+      <div className={classes.details}>
+        <Typography noWrap variant='body2'>
+          {
+            lastActive
+          }
+          {/* {moment(lastMessage.sender.createdAt).isSame(moment(), "day")
+            ? moment(lastMessage.sender.createdAt).format("LT")
+            : moment(lastMessage.sender.createdAt).fromNow()} */}
+        </Typography>
+        {conversation.unread > 0 && (
+          <Label
+            className={classes.unread}
+            color={colors.red[500]}
+            shape='rounded'>
+            {conversation.unread}
+          </Label>
+        )}
+      </div>
     </ListItem>
   );
 };

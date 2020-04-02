@@ -35,12 +35,14 @@ const Chat = (props) => {
 
       fetchRoomList(socket, userId, username, email);
 
-      socket.on("messageFromServer", (message, roomId) => {
-        receiveMessage(message, roomId);
+      socket.on("messageFromServer", (message, roomId, unreadTotal) => {
+        const audio = new Audio("/sounds/alert_notify.mp3");
+        audio.play();
+        receiveMessage(message, roomId, unreadTotal);
       });
 
-      socket.on("userActivityList", ({ userId, isOnline }) => {
-        fetchUsersStatus(userId, isOnline);
+      socket.on("userActivityList", ({ userId, isOnline, lastActivity }) => {
+        fetchUsersStatus(userId, isOnline, lastActivity);
       });
     }
 
@@ -142,7 +144,7 @@ const Chat = (props) => {
       );
     }
     setConversation(selectedConversation);
-  }, [match.params.id]);
+  }, [match.params.id, conversations]);
 
   return (
     <PageWrapper>
@@ -178,7 +180,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = dispatch => ({
   checkAuth: () => dispatch(actions.authCheckState()),
   fetchRoomList: (socket, userId, username, email) => dispatch(actions.chatFetchInit(socket, userId, username, email)),
-  receiveMessage: (message, roomId) => dispatch(actions.chatSetMessageRealTime(message, roomId, false)),
+  receiveMessage: (message, roomId, unreadTotal) => dispatch(actions.chatSetMessageRealTime(message, roomId, false, unreadTotal)),
   fetchUsersStatus: (userId, isOnline) => dispatch(actions.chatSetUsersStatus(userId, isOnline))
 });
 
