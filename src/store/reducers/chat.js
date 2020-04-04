@@ -74,6 +74,9 @@ const reducer = (state = initialState, action) => {
           conversations: updatedConversation
         }
       }
+      return {
+        ...state
+      }
     }
     case CHAT.CHAT_SET_MESSAGE_REALTIME: {
       const fileTypes = ['image', 'file'];
