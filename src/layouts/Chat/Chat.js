@@ -25,7 +25,7 @@ const Chat = (props) => {
       history.replace('/auth/login');
     }
     if (token) {
-      socket = io(`https://chat-app-be.tk/${companyId}`, {
+      socket = io(`http://localhost:8000/${companyId}`, {
         query: {
           token: token
         }

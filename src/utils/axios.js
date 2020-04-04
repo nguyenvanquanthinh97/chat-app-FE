@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: "https://chat-app-be.tk",
+  baseURL: "http://localhost:8000",
   timeout: 2000
 });
 

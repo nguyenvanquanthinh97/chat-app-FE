@@ -1,0 +1,21 @@
+.image {
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  .black-dim {
+    opacity: 0;
+    color: #fff;
+    text-align: center;
+    line-height: 7rem;
+    transition: opacity 1s;
+  }
+  &:hover {
+    .black-dim {
+      opacity: 1;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+      background-color: rgba($color: #000000, $alpha: 0.5);
+    }
+  }
+}

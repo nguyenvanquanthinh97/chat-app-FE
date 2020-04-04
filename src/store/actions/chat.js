@@ -1,4 +1,5 @@
 import { CHAT } from '../actionTypes';
+import { get } from 'lodash';
 
 export const chatFetchInit = (socket, userId, username, email) => ({
   type: CHAT.CHAT_FETCH_INIT,
@@ -46,27 +47,44 @@ export const chatSendMessageInit = (socket, message, roomId) => ({
   roomId
 });
 
-export const chatSetMessageRealTime = (message, roomId, isAuth, unreadTotal = 0) => ({
-  type: CHAT.CHAT_SET_MESSAGE_REALTIME,
-  message,
-  roomId,
-  isAuth,
-  unread: unreadTotal
-});
+// export const chatSetMessageRealTime = (message, roomId, isAuth, unreadTotal = 0) => ({
+//   type: CHAT.CHAT_SET_MESSAGE_REALTIME,
+//   message,
+//   roomId,
+//   isAuth,
+//   unread: unreadTotal
+// });
+
+export const chatSetMessageRealTime = (message, roomId, isAuth, unreadTotal = 0) => {
+  const fileTypes = ['image', 'file'];
+  let isUserSend = isAuth;
+  if (fileTypes.includes(get(message, 'contentType'))) {
+    const senderId = get(message, 'senderId');
+    const userId = localStorage.getItem('userId');
+    isUserSend = (senderId === userId);
+  }
+  return {
+    type: CHAT.CHAT_SET_MESSAGE_REALTIME,
+    message,
+    roomId,
+    isAuth: isUserSend,
+    unread: unreadTotal
+  };
+};
 
 export const chatSetUsersStatus = (userId, isOnline, lastActivity) => ({
   type: CHAT.CHAT_SET_USERS_STATUS,
   userId,
   active: isOnline,
   lastActivity
-})
+});
 
 export const chatSetUnreadMessagesToRead = (roomId) => ({
   type: CHAT.CHAT_SET_UNREAD_MESSAGES_ARE_READ,
   roomId
-})
+});
 
 export const chatAuthClose = (socket) => ({
   type: CHAT.CHAT_AUTH_CLOSE,
   socket
-})
+});

@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import moment from 'moment-timezone';
 
 import ConversationMessage from './ConversationMessage';
 import * as actions from '../../../../../../store/actions';
@@ -20,8 +21,17 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const ConversationMessages = props => {
-  const { messages, className, match, socket, setUnreadMessagesToRead, ...rest } = props;
+  const { messages, loading, className, match, socket, setUnreadMessagesToRead, avatar, ...rest } = props;
 
+  const loadingMessage = {
+    sender: {
+      authUser: true,
+      avatar: avatar,
+      content: 'Sending file Please wait ...',
+      contentType: 'text',
+      createdAt: moment()
+    }
+  };
 
   const classes = useStyles();
   const bottomRef = useRef(null);
@@ -31,8 +41,8 @@ const ConversationMessages = props => {
     if (socket) {
       socket.emit("readMessagesFromRoom", match.params.id);
     }
-    if(messages) {
-      setUnreadMessagesToRead(match.params.id)
+    if (messages) {
+      setUnreadMessagesToRead(match.params.id);
     }
   }, [messages.length]);
 
@@ -51,6 +61,7 @@ const ConversationMessages = props => {
             />
           );
         })}
+        {loading && (<ConversationMessage message={loadingMessage} />)}
       </div>
     </div>
   );
@@ -62,7 +73,8 @@ ConversationMessages.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  socket: state.chat.socket
+  socket: state.chat.socket,
+  avatar: state.auth.avatar
 });
 
 const mapDispatchToProps = dispatch => ({
