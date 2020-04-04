@@ -61,13 +61,38 @@ const reducer = (state = initialState, action) => {
         loading: false
       };
     }
+    case CHAT.CHAT_SEND_MESSAGE_INIT: {
+      const type = get(action.message, 'contentType');
+      const fileTypes = ['image', 'file'];
+      if(fileTypes.includes(type)) {
+        const updatedConversation = cloneDeep(state.conversations);
+        const roomId = action.roomId;
+        const room = updatedConversation.find(item => item.id === roomId);
+        set(room, 'loading', true);
+        return {
+          ...state,
+          conversations: updatedConversation
+        }
+      }
+    }
     case CHAT.CHAT_SET_MESSAGE_REALTIME: {
+      const fileTypes = ['image', 'file'];
       const updatedConversation = cloneDeep(state.conversations);
       const roomId = action.roomId;
       const message = action.message;
       const isAuth = action.isAuth;
+      if (fileTypes.includes(get(message, 'contentType')) && get(message, 'content', '') === '') {
+        return {
+          ...state
+        };
+      }
+
       const room = updatedConversation.find(item => item.id === roomId);
       room.unread = action.unread;
+      if(fileTypes.includes(get(message, 'contentType'))) {
+        set(room, 'loading', false);
+      }
+
       const formatMessage = {
         sender: {
           authUser: isAuth,

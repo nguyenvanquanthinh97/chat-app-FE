@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import moment from 'moment';
 import { makeStyles } from '@material-ui/core';
-import {get} from 'lodash';
+import { get } from 'lodash';
 import { Typography, Link, Avatar, colors } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
@@ -45,6 +45,9 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(1),
     display: 'flex',
     justifyContent: 'flex-end'
+  },
+  link: {
+    color: "#fff"
   }
 }));
 
@@ -68,7 +71,7 @@ const ConversationMessage = props => {
         <Avatar
           className={classes.avatar}
           component={RouterLink}
-          src={get(message, 'sender.avatar', '' )}
+          src={get(message, 'sender.avatar', '')}
           to="/profile/1/timeline"
         />
         <div>
@@ -84,13 +87,14 @@ const ConversationMessage = props => {
               </Link>
             </div>
             <div className={classes.content}>
-              {message.sender.contentType === 'image' ? (
+              {message.sender.contentType === 'image' && (
                 <img
                   alt="Attachment"
                   className={classes.image}
                   src={message.sender.content}
                 />
-              ) : (
+              )}
+              {message.sender.contentType === 'text' && (
                 <Typography
                   color="inherit"
                   variant="body1"
@@ -98,6 +102,16 @@ const ConversationMessage = props => {
                   {message.sender.content}
                 </Typography>
               )}
+              {
+                message.sender.contentType === 'file' && (
+                  <Typography
+                    color="inherit"
+                    variant="body1"
+                  >
+                    <a className={classes.link} href={message.sender.content}>{message.sender.content}</a>
+                  </Typography>
+                )
+              }
             </div>
           </div>
           <div className={classes.footer}>

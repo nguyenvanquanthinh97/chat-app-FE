@@ -10,9 +10,18 @@
       height: 80%;
       width: 100%;
     }
+    .conversation-messages--has-image-preview {
+      height: calc(80% - 7rem);
+    }
+    .image-preview__area {
+      height: 7rem;
+      width: 100%;
+    }
+    .image-preview {
+      width: 7rem;
+      height: 7rem;
+    }
     .conversation-input {
-      position: fixed;
-      width: 75%;
       bottom: 1rem;
     }
   }
