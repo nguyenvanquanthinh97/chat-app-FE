@@ -22,7 +22,7 @@ function* handleJoinCompanyChatEvent(socket, userId, username) {
         const otherUserStatus = userActivityList.find(userActivity => userActivity.userId === otherUser.userId);
         const active = get(otherUserStatus, 'isOnline', null);
         let lastActivity = "";
-        if(active !== null) {
+        if (active !== null) {
           lastActivity = active ? moment() : moment(get(otherUserStatus, 'lastActive'));
         }
         const messages = get(room, 'messages', []).map(message => {
@@ -78,6 +78,18 @@ function* fetchRoomListSaga(action) {
 
 function* sendMessageSaga({ socket, message, roomId }) {
   socket.emit("messageFromClient", message, roomId);
+  const messageType = get(message, 'contentType');
+  const fileTypes = ['image', 'file'];
+  if (fileTypes.includes(messageType)) {
+    const formatMessage = {
+      ...message,
+      contentType: 'text',
+      file: null,
+      fileName: null
+    };
+    yield put(actions.chatSetMessageRealTime(formatMessage, roomId, true));
+    return;
+  }
   yield put(actions.chatSetMessageRealTime(message, roomId, true));
 }
 
