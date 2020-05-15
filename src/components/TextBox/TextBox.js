@@ -10,14 +10,10 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const TextBox = (props) => {
-  let { label, value, handleChange, validator, autoFocus, type, errorMessages } = props;
-  if (!type) {
-    type = "text";
-  }
+const TextBox = ({ label, value, handleChange, validator, autoFocus, type, errorMessages }) => {
   return (
     <Fragment>
-      <TextField helperText={errorMessages} error={validator} type={type} label={label} value={value} onChange={handleChange} variant="outlined" autoFocus={autoFocus} fullWidth />
+      <TextField helperText={errorMessages} error={validator} type={type || 'text'} label={label} value={value} onChange={handleChange} variant="outlined" autoFocus={autoFocus} fullWidth />
     </Fragment>
   );
 };

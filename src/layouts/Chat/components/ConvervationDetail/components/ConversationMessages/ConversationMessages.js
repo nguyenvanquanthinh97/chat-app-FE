@@ -20,8 +20,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ConversationMessages = props => {
-  const { messages, loading, className, match, socket, setUnreadMessagesToRead, avatar, ...rest } = props;
+const ConversationMessages = ({ messages, loading, className, match, socket, setUnreadMessagesToRead, avatar, otherUserAvatar, staticContext, ...props }) => {
 
   const loadingMessage = {
     sender: {
@@ -48,20 +47,21 @@ const ConversationMessages = props => {
 
   return (
     <div
-      {...rest}
+      {...props}
       className={clsx(classes.root, className)}
       ref={bottomRef}
     >
       <div className={classes.inner}>
-        {messages.map(message => {
+        {messages.map((message, idx) => {
           return (
             <ConversationMessage
-              key={message.id}
+              key={idx}
               message={message}
+              otherUserAvatar={otherUserAvatar}
             />
           );
         })}
-        {loading && (<ConversationMessage message={loadingMessage} />)}
+        {loading && (<ConversationMessage key='waiting message' message={loadingMessage} />)}
       </div>
     </div>
   );

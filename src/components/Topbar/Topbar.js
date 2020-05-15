@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/styles";
 import { AppBar, Toolbar, Button } from "@material-ui/core";
 import { ExitToApp } from '@material-ui/icons';
@@ -17,13 +16,11 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Topbar = props => {
-  const { className, isLogin, ...rest } = props;
-
+const Topbar = ({ className, isLogin, ...props }) => {
   const classes = useStyles();
 
   return (
-    <AppBar {...rest} className={clsx(classes.root, className)} color='primary'>
+    <AppBar className={clsx(classes.root, className)} color='primary'>
       <Toolbar>
         <Link to='/'>
           <img alt='Logo' src='/images/logos/logo.png' />
@@ -42,13 +39,8 @@ const Topbar = props => {
   );
 };
 
-Topbar.propTypes = {
-  className: PropTypes.string,
-  isLogin: PropTypes.bool
-};
-
 const mapStateToProps = state => ({
   isLogin: state.auth.isLogin
 });
 
-export default connect(mapStateToProps)(Topbar);
+export default connect(mapStateToProps, null)(Topbar);

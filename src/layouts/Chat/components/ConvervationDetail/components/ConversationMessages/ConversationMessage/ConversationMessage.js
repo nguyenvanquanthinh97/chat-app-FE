@@ -6,6 +6,7 @@ import moment from 'moment';
 import { makeStyles } from '@material-ui/core';
 import { get } from 'lodash';
 import { Typography, Link, Avatar, colors } from '@material-ui/core';
+import { connect } from 'react-redux';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -51,18 +52,17 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ConversationMessage = props => {
-  const { message, className, ...rest } = props;
+const ConversationMessage = ({ message, className, authAvatar, otherUserAvatar, ...props }) => {
 
   const classes = useStyles();
+  const isAuth = get(message, 'sender.authUser', false);
 
   return (
     <div
-      {...rest}
       className={clsx(
         classes.root,
         {
-          [classes.authUser]: get(message, 'sender.authUser', false)
+          [classes.authUser]: isAuth
         },
         className
       )}
@@ -71,7 +71,7 @@ const ConversationMessage = props => {
         <Avatar
           className={classes.avatar}
           component={RouterLink}
-          src={get(message, 'sender.avatar', '')}
+          src={isAuth ? authAvatar : otherUserAvatar}
           to="/profile/1/timeline"
         />
         <div>
@@ -130,7 +130,12 @@ const ConversationMessage = props => {
 
 ConversationMessage.propTypes = {
   className: PropTypes.string,
-  message: PropTypes.object.isRequired
+  message: PropTypes.object.isRequired,
+  authImg: PropTypes.string
 };
 
-export default ConversationMessage;
+const mapStateToProps = state => ({
+  authAvatar: state.auth.avatar
+});
+
+export default connect(mapStateToProps)(ConversationMessage);

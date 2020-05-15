@@ -32,18 +32,18 @@ function* handleJoinCompanyChatEvent(socket, userId, username) {
             sender: {
               authUser: isAuth,
               username: usernameOfSender,
-              avatar: '',
               content: get(message, 'content'),
               contentType: get(message, 'contentType'),
               createdAt: moment(get(message, 'createdAt'))
             }
           };
         });
+
         return {
           id,
           otherUserId: get(otherUser, 'userId'),
           username: get(otherUser, 'username'),
-          avatar: get(room, 'avatar', ''),
+          avatar: get(otherUserStatus, 'avatar[0]', ''),
           active,
           lastActivity,
           messages,

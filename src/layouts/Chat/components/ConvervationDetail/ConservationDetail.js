@@ -9,8 +9,7 @@ import ConversationForm from './components/ConversationForm';
 import './style.scss';
 import Image from '../../../../components/Image';
 
-const ConversationDetail = (props) => {
-  const { conversation, className, match, socket, ...rest } = props;
+const ConversationDetail = ({ conversation, className, match, socket, staticContext, ...props }) => {
   const [imagePreview, setImagePreview] = useState(null);
   const roomId = get(match, 'params.id');
 
@@ -19,13 +18,13 @@ const ConversationDetail = (props) => {
   };
 
   return (
-    <div {...rest} className="container">
+    <div {...props} className="container">
       <div className="toolbar">
         <ConversationToolbar conversation={conversation} />
       </div>
       <div className="main-content">
         <div className={imagePreview ? "conversation-messages--has-image-preview" : "conversation-messages"}>
-          <ConversationMessages loading={get(conversation, 'loading', false)} messages={get(conversation, 'messages', [])} />
+          <ConversationMessages otherUserAvatar={get(conversation, 'avatar', null)} loading={get(conversation, 'loading', false)} messages={get(conversation, 'messages', [])} />
         </div>
         {imagePreview && (
           <div className="image-preview__area">

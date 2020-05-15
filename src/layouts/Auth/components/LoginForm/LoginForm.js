@@ -4,7 +4,7 @@ import { get } from 'lodash';
 import { makeStyles } from '@material-ui/core';
 import { Avatar } from '@material-ui/core';
 import clsx from "clsx";
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 import * as actions from '../../../../store/actions';
 import TextBox from '../../../../components/TextBox';
@@ -111,7 +111,7 @@ const LoginForm = (props) => {
 
   return (
     <form className={clsx(classes.root, className)}>
-      {(error && error !== "Invalid Token") && <h4 className={classes.warning}>{error}</h4>}
+      {(error && error !== "Invalid Token") && <h4 className={classes.warning}>{typeof (error) === 'object' ? get(error, 'msg') : error}</h4>}
       <div className={classes.fields}>
         <Avatar alt="Chat Whisper" src="/images/logos/chat-logo.png" className={clsx(classes.logo)} classes={{ img: classes.img }} />
         <TextBox
@@ -119,7 +119,7 @@ const LoginForm = (props) => {
           value={get(emailState, 'content')}
           handleChange={emailOnChange}
           validator={hasError(emailState)}
-          errorMessages={hasError(emailState) ? get(emailState, 'errors')[0] : null}
+          errorMessages={get(emailState, 'errors', [])}
           autoFocus />
         <TextBox
           label="Password"
@@ -141,10 +141,10 @@ const LoginForm = (props) => {
 
 const mapStateToProps = state => ({
   error: state.auth.error
-})
+});
 
 const mapDispatchToProps = dispatch => ({
   authLogin: (email, password) => dispatch(actions.authInit(email, password))
-})
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);

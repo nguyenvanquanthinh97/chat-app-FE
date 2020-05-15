@@ -18,8 +18,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ConversationList = (props) => {
-  const { conversations, className, match, ...rest } = props;
+const ConversationList = ({ conversations, className, match, path, ...props }) => {
   const [stateInput, setStateInput] = useState('');
   const [searchedConversations, setSearchedConversation] = useState([]);
 
@@ -28,7 +27,7 @@ const ConversationList = (props) => {
 
   useEffect(() => {
     setSearchedConversation(conversations);
-  }, [conversations])
+  }, [conversations]);
 
   const handleSearch = (event) => {
     const username = event.target.value;
@@ -38,13 +37,13 @@ const ConversationList = (props) => {
   };
 
   return (
-    <div {...rest} className={clsx(classes.root, className)}>
+    <div className={clsx(classes.root, className)}>
       <SearchForm value={stateInput} handleInput={handleSearch} placeholder="Search Username" />
       <Divider />
       <List disablePadding>
         {searchedConversations.map((conversation, i) => (
           <ConversationListItem
-            path={props.path}
+            path={path}
             active={conversation.id === selectedConversation}
             conversation={conversation}
             divider={i < searchedConversations.length - 1}
