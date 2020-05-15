@@ -25,7 +25,7 @@ const Chat = (props) => {
       history.replace('/auth/login');
     }
     if (token) {
-      socket = io(`https://chat-app-be.tk/${companyId}`, {
+      socket = io(`${process.env.REACT_APP_BACKEND_CHAT_WHISPER || 'https://chat-whisper.herokuapp.com'}/${companyId}`, {
         query: {
           token: token
         }
