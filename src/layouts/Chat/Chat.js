@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import moment from 'moment-timezone';
-import axios from "axios";
 import { get } from 'lodash';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -25,7 +23,7 @@ const Chat = (props) => {
       history.replace('/auth/login');
     }
     if (token) {
-      socket = io(`${process.env.REACT_APP_BACKEND_CHAT_WHISPER || 'https://chat-app-be.tk'}/${companyId}`, {
+      socket = io(`https://chat-app-be.tk/${companyId}`, {
         query: {
           token: token
         }
@@ -46,6 +44,11 @@ const Chat = (props) => {
       });
     }
 
+    return () => {
+      if(socket) {
+        socket.close();
+      }
+    };
   }, [isLogin]);
 
   // useEffect(() => {
