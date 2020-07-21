@@ -48,7 +48,7 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'flex-end'
   },
   link: {
-    color: "#fff"
+    color: "#3A08A0"
   }
 }));
 
