@@ -8,6 +8,14 @@ import { get } from 'lodash';
 import { Typography, Link, Avatar, colors } from '@material-ui/core';
 import { connect } from 'react-redux';
 
+const videos = [ 'mp4', 'flv', 'WMV', 'MPEG-4', 'AVI' ];
+
+const checkIsVideo = (url) => {
+	if(!url) return false;
+	const filetype = url.replace(/.*\.([a-zA-Z0-9]+)$/, '$1');
+	return videos.includes(filetype);
+};
+
 const useStyles = makeStyles((theme) => ({
 	root: {
 		marginBottom: theme.spacing(2)
@@ -92,7 +100,9 @@ const ConversationMessage = ({ message, className, authAvatar, otherUserAvatar, 
 									{message.sender.content}
 								</Typography>
 							)}
-							{message.sender.contentType === 'file' && (
+
+							{message.sender.contentType === 'file' &&
+							!checkIsVideo(message.sender.content) && (
 								<Typography color="inherit" variant="body1">
 									<a
 										className={isAuth ? classes.link : classes.receiverLink}
@@ -101,6 +111,14 @@ const ConversationMessage = ({ message, className, authAvatar, otherUserAvatar, 
 										{message.sender.content}
 									</a>
 								</Typography>
+							)}
+							{message.sender.contentType === 'file' &&
+							checkIsVideo(message.sender.content) && (
+								<video width="320" height="240" controls>
+									<source
+										src={message.sender.content}
+									/>
+								</video>
 							)}
 						</div>
 					</div>

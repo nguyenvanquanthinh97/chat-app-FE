@@ -1,6 +1,9 @@
 import { CHAT } from '../actionTypes';
 import { get } from 'lodash';
 
+import axios from '../../utils/axios';
+import * as api from '../../api/index';
+
 export const chatFetchInit = (socket, userId, username, email) => ({
   type: CHAT.CHAT_FETCH_INIT,
   socket,
@@ -88,3 +91,10 @@ export const chatAuthClose = (socket) => ({
   type: CHAT.CHAT_AUTH_CLOSE,
   socket
 });
+
+export const uploadFile = async (message) => {
+  const {file, fileName, contentType} = message;
+  const url = await api.upload(file, fileName, contentType);
+
+  return url;
+}

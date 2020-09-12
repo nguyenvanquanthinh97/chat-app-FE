@@ -19,5 +19,6 @@ export {
   chatSetMessageRealTime,
   chatSetUsersStatus,
   chatSetUnreadMessagesToRead,
-  chatAuthClose
+  chatAuthClose,
+  uploadFile
 } from './chat'
