@@ -32,7 +32,8 @@ export const upload = async (fileBase64, fileName, contentType) => {
 		await axios.put(uploadConfig.data.url, file, {
 			headers: {
 				'Content-Type': filetype
-			}
+			},
+			timeout: 3600000
 		});
 	} catch (err) {
 		console.log(err);
